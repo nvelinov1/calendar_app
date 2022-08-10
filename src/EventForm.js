@@ -7,7 +7,7 @@ export default function EventForm({ EventsList, setEventsList }) {
     const [NewEvent, setNewEvent] = useState({title: "", start: "", end: ""})
 
   return (
-      <form onSubmit={(e) => {
+      <form onSubmit={(e)  => {
           e.preventDefault(); 
           setEventsList([...EventsList, NewEvent])}
         }>
