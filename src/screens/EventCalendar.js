@@ -3,11 +3,9 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import { useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography'
 import EventForm from '../components/EventForm'
-import Container from '@mui/material/Container'
 import '@fontsource/roboto/300.css';
+import { Typography, Container, Grid } from '@mui/material'
 
 export default function EventCalendar() {
     const [EventsList, setEventsList] = useState([])
@@ -30,7 +28,6 @@ export default function EventCalendar() {
         </Grid>
             
         <Grid item xs={3} justifyContent="space-around">
-          <Typography align="center" variant="h4"> Add New Event </Typography>
           <EventForm EventsList={EventsList} setEventsList={setEventsList} />
         </Grid>
       </Grid>

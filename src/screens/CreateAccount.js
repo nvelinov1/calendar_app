@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
+import { Stack, Button, Typography, TextField, Container } from '@mui/material'
 import '@fontsource/roboto/300.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'
@@ -31,7 +28,7 @@ export default function CreateAccount() {
     }
 
     return (
-        <div>
+        <Container>
             <Stack spacing={2} direction="column">
                 <Typography align="center" variant="h2">Create Your Account</Typography>
                 <TextField required label="Email" variant="filled" type="email" value={registerInfo.email} onChange={(e) => setRegisterInfo({...registerInfo, email: e.target.value})} />
@@ -39,6 +36,6 @@ export default function CreateAccount() {
                 <TextField required label="Confirm Password" variant="filled" type="password" value={registerInfo.confirm_password} onChange={(e) => setRegisterInfo({...registerInfo, confirm_password: e.target.value})} />
                 <Button variant="contained" onClick={()=> onRegister()}>Create Account</Button>
             </Stack>
-        </div>
+        </Container>
     )
 }

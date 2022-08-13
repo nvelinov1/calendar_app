@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Stack } from '@mui/system'
-import { TextField, Typography, Button } from '@mui/material'
+import { TextField, Typography, Button, Container } from '@mui/material'
 import { auth } from '../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
@@ -21,13 +21,13 @@ export default function Login() {
     }
 
     return (
-        <div>
-        <Stack spacing={2} direction="column">
-            <Typography align="center" variant="h2">Log Into Your Account</Typography>
-            <TextField required label="Email" variant="filled" type="email" value={loginInfo.email} onChange={(e) => setLoginInfo({...loginInfo, email: e.target.value})} />
-            <TextField required label="Password" variant="filled" type="password" value={loginInfo.password} onChange={(e) => setLoginInfo({...loginInfo, password: e.target.value})} /> 
-            <Button variant="contained" onClick={() => handleLogin()}>Log In</Button>
-        </Stack>
-    </div>
+        <Container>
+            <Stack spacing={2} direction="column">
+                <Typography align="center" variant="h2">Log Into Your Account</Typography>
+                <TextField required label="Email" variant="filled" type="email" value={loginInfo.email} onChange={(e) => setLoginInfo({...loginInfo, email: e.target.value})} />
+                <TextField required label="Password" variant="filled" type="password" value={loginInfo.password} onChange={(e) => setLoginInfo({...loginInfo, password: e.target.value})} /> 
+                <Button variant="contained" onClick={() => handleLogin()}>Log In</Button>
+            </Stack>
+        </Container>
     )
 }
