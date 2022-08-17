@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Stack } from '@mui/system'
 import { TextField, Typography, Button, Container } from '@mui/material'
 import { auth } from '../firebase'
@@ -10,9 +10,17 @@ export default function Login() {
 
     const navigate = useNavigate()
 
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            navigate("/calendar");
+          }
+        });
+    });
+
     const handleLogin = async () => {
         try {
-            const user = await signInWithEmailAndPassword(auth, loginInfo.email, loginInfo.password)
+            await signInWithEmailAndPassword(auth, loginInfo.email, loginInfo.password)
             navigate("/calendar")
         }
         catch(error) {

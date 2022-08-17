@@ -1,15 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Stack, Button, Typography, TextField, Container } from '@mui/material'
-import '@fontsource/roboto/300.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'
 import { useNavigate } from 'react-router-dom'
+import '@fontsource/roboto/300.css';
 
 export default function CreateAccount() {
     
     const [registerInfo, setRegisterInfo] = useState({email: "", password: "", confirm_password: ""})
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            navigate("/calendar");
+          }
+        });
+    });
 
     const onRegister = async () => {
         if (registerInfo.password !== registerInfo.confirm_password) {
@@ -18,7 +26,7 @@ export default function CreateAccount() {
         }
 
         try {
-            const user = await createUserWithEmailAndPassword(auth, registerInfo.email, registerInfo.password)
+            await createUserWithEmailAndPassword(auth, registerInfo.email, registerInfo.password)
             navigate("/calendar")
         }
         catch(error) {
