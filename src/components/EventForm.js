@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import DatePicker from './DatePicker';
+import moment from 'moment';
 import { Box, Stack, TextField, Button, Typography } from '@mui/material'
 import { uid } from 'uid'
 import { auth, db } from '../firebase'
-import { set, ref, onValue, remove, update } from "firebase/database";
+import { set, ref } from "firebase/database";
 
 export default function EventForm({ EventsList, setEventsList }) {
     const [NewEvent, setNewEvent] = useState({title: "", start: "", end: ""})
@@ -11,10 +12,12 @@ export default function EventForm({ EventsList, setEventsList }) {
     const HandleSubmit = (e) => {
       e.preventDefault()
       const uidd = uid();
+      const db_event = {...NewEvent}
       setEventsList([...EventsList, NewEvent])
-      console.log(NewEvent)
+      db_event.start = moment(db_event.start).unix()
+      db_event.end = moment(db_event.end).unix()
       set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
-        event: NewEvent,
+        event: db_event,
         uidd: uidd
       });
     }

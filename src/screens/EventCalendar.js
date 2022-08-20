@@ -6,7 +6,7 @@ import EventForm from '../components/EventForm'
 import { Typography, Container, Grid } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../firebase'
-import { set, ref, onValue, remove, update } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@fontsource/roboto/300.css';
 
@@ -22,20 +22,23 @@ export default function EventCalendar() {
       if (!user) {
         navigate("/");
       }
-      // else {
-      //   onValue(ref(db, `${auth.currentUser.uid}`), (dataView) => {
-      //     setEventsList([])
-      //     const data = dataView.val()
-      //     if (data !== null) {
-      //       Object.values(data).map((event) => {
-      //         setEventsList((oldArray) => [...oldArray, event]);
-      //       });
-      //     }
-      //   })
+      else if (user) {
+        onValue(ref(db, `/${auth.currentUser.uid}`), (dataView) => {
+          const data = dataView.val()
+          console.log(data)
+          if (data !== null) {
+            setEventsList([])
+            Object.values(data).map((event) => {
+              event.event.start = new Date(event.event.start *1000)
+              event.event.end = new Date(event.event.end * 1000)
+              setEventsList((oldArray) => [...oldArray, event.event]);
+            });
+          }
+        })
 
-      // }
+      }
     });
-  });
+  },[]);
 
   return (
     <Container>
