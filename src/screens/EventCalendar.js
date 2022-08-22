@@ -57,7 +57,7 @@ export default function EventCalendar() {
         </Grid>
             
         <Grid item xs={3} justifyContent="space-around">
-          <EventForm EventsList={EventsList} setEventsList={setEventsList} />
+          <EventForm />
         </Grid>
       </Grid>
     </Container>

@@ -17,7 +17,7 @@ export default function CreateAccount() {
             navigate("/calendar");
           }
         });
-    });
+    }, []);
 
     const onRegister = async () => {
         if (registerInfo.password !== registerInfo.confirm_password) {

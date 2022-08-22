@@ -6,14 +6,13 @@ import { uid } from 'uid'
 import { auth, db } from '../firebase'
 import { set, ref } from "firebase/database";
 
-export default function EventForm({ EventsList, setEventsList }) {
+export default function EventForm() {
     const [NewEvent, setNewEvent] = useState({title: "", start: "", end: ""})
 
     const HandleSubmit = (e) => {
       e.preventDefault()
       const uidd = uid();
       const db_event = {...NewEvent}
-      setEventsList([...EventsList, NewEvent])
       db_event.start = moment(db_event.start).unix()
       db_event.end = moment(db_event.end).unix()
       set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
