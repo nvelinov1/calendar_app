@@ -7,15 +7,20 @@ import { Typography, Container, Grid, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../firebase'
 import { ref, onValue } from "firebase/database";
+import PopUp from '../components/PopUp';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@fontsource/roboto/300.css';
 
 export default function EventCalendar() {
 
   const [EventsList, setEventsList] = useState([])
+  const [ModalOpen, setModalOpen] = useState(false)
+  const [ClickedEvent, setClickedEvent] = useState([])
   const localizer = momentLocalizer(moment)
   const emailRef = useRef("")
   const navigate = useNavigate()
+  let signedIn = ""
+
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -42,7 +47,11 @@ export default function EventCalendar() {
     });
   },[]);
 
-  let signedIn = ""
+  const handleEventClick = (event) => {
+    setModalOpen(true)
+    setClickedEvent(event)
+  }
+
   if (emailRef.current) {
     signedIn = <Typography align="center" variant="h6">Signed in as {emailRef.current}<Button sx={{ m: "5px" }} variant="contained" size="small" onClick={async()=>await auth.signOut()}>Sign Out</Button></Typography>
   }
@@ -53,15 +62,14 @@ export default function EventCalendar() {
         Calendar App
       </Typography>
       {signedIn}
-
+      <PopUp handleClose={()=>setModalOpen(false)} openState={ModalOpen} ClickedEvent={ClickedEvent} />
       <Grid container spacing={2} alignItems="stretch" direction="row" justifyContent="center">
         <Grid item xs={8}>
           <Calendar
           localizer={localizer}
           events={EventsList}
-          startAccessor="start"
-          endAccessor="end"
           style={{ height: 500 }}
+          onSelectEvent={(e)=>handleEventClick(e)}
           />
         </Grid>
             
