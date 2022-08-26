@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import { useState, useEffect } from 'react';
@@ -8,19 +8,17 @@ import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../firebase'
 import { ref, onValue } from "firebase/database";
 import PopUp from '../components/PopUp';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@fontsource/roboto/300.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 export default function EventCalendar() {
 
   const [EventsList, setEventsList] = useState([])
   const [ModalOpen, setModalOpen] = useState(false)
   const [ClickedEvent, setClickedEvent] = useState([])
+  const [Email, setEmail] = useState()
   const localizer = momentLocalizer(moment)
-  const emailRef = useRef("")
   const navigate = useNavigate()
-  let signedIn = ""
-
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -28,10 +26,9 @@ export default function EventCalendar() {
         navigate("/");
       }
       else if (user) {
-        emailRef.current = auth.currentUser.email
-        onValue(ref(db, `/${auth.currentUser.uid}`), (dataView) => {
-          const data = dataView.val()
-          console.log(data)
+        setEmail(auth.currentUser.email)
+        onValue(ref(db, `/${auth.currentUser.uid}`), (snapshot) => {
+          const data = snapshot.val()
           if (data !== null) {
             setEventsList([])
             Object.values(data).map((event) => {
@@ -52,17 +49,19 @@ export default function EventCalendar() {
     setClickedEvent(event)
   }
 
-  if (emailRef.current) {
-    signedIn = <Typography align="center" variant="h6">Signed in as {emailRef.current}<Button sx={{ m: "5px" }} variant="contained" size="small" onClick={async()=>await auth.signOut()}>Sign Out</Button></Typography>
+  const renderSignedIn = () => {
+    if (Email) {   
+      return <Typography align="center" variant="h6">Signed in as {Email}<Button sx={{ m: "5px" }} variant="contained" size="small" onClick={async()=>await auth.signOut()}>Sign Out</Button></Typography>
+    }
   }
 
   return (
-    <Container>
+    <Container sx={{ fontFamily: "Roboto" }}>
       <Typography align="center" variant="h2">
         Calendar App
       </Typography>
-      {signedIn}
       <PopUp handleClose={()=>setModalOpen(false)} openState={ModalOpen} ClickedEvent={ClickedEvent} />
+      {renderSignedIn()}
       <Grid container spacing={2} alignItems="stretch" direction="row" justifyContent="center">
         <Grid item xs={8}>
           <Calendar

@@ -12,7 +12,7 @@ export default function EventForm() {
     const HandleSubmit = async(e) => {
       e.preventDefault()
       const uidd = uid();
-      const db_event = {...NewEvent}
+      const db_event = {...NewEvent, id: uidd}
       db_event.start = moment(db_event.start).unix()
       db_event.end = moment(db_event.end).unix()
       await set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
