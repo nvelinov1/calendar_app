@@ -20,24 +20,21 @@ export default function PopUp({ handleClose, openState, ClickedEvent }) {
 
   const onDelete = async() => {
     await remove(ref(db, `/${auth.currentUser.uid}/${ClickedEvent.id}`));
-    window.location.reload(false)
+    window.location.reload()
   }
 
   return (
     <Modal open={openState} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Container>
           <Box sx={styles}>
-          <Typography align="center" id="modal-modal-title" variant="h4"> 
-              Single Event View
+          <Typography align="center" id="modal-modal-title" variant="h4">  
+            <strong>{ClickedEvent.title}</strong>  
             </Typography>
             <Typography align="center" id="modal-modal-description" variant="h6"> 
-            <strong>Event title:</strong> {ClickedEvent.title} 
+              <strong>Event start:</strong> {moment(ClickedEvent.start).format('DD-MM-YYYY hh:mm A')} 
             </Typography>
             <Typography align="center" id="modal-modal-description" variant="h6"> 
-              <strong>Event start:</strong> {moment(ClickedEvent.start).format('DD-MM-YYYY')} 
-            </Typography>
-            <Typography align="center" id="modal-modal-description" variant="h6"> 
-              <strong>Event end:</strong> {moment(ClickedEvent.end).format('DD-MM-YYYY')}
+              <strong>Event end:</strong> {moment(ClickedEvent.end).format('DD-MM-YYYY hh:mm A')}
             </Typography>
             <Typography align="center">
               <Button variant="contained" align="center" onClick={()=>onDelete()}>Delete Event</Button>

@@ -7,7 +7,7 @@ import { auth, db } from '../firebase'
 import { set, ref } from "firebase/database";
 
 export default function EventForm() {
-    const [NewEvent, setNewEvent] = useState({title: "", start: "", end: ""})
+    const [NewEvent, setNewEvent] = useState({title: "", start: null, end: null})
 
     const HandleSubmit = async(e) => {
       e.preventDefault()
@@ -19,12 +19,13 @@ export default function EventForm() {
         event: db_event,
         uidd: uidd
       });
+      setNewEvent({title: "", start: null, end: null})
     }
 
     return (
           <Box sx={{ width: '100%'}}>
             <Stack direction="column" justifyContent="center" alignItems="stretch" spacing={2}>
-              <Typography align="center" variant="h4"> Add New Event </Typography>
+              <Typography  align="center" variant="h4"> Add New Event </Typography>
               <TextField id="outlined-basic" variant="outlined" type="text" placeholder="Event Title" value={NewEvent.title} onChange={(e) => setNewEvent({...NewEvent, title: e.target.value})} />
               <DatePicker value={NewEvent.start} text="Start Date" handleChange={(newValue) => {setNewEvent({...NewEvent, start: newValue.toDate()});}}/>
               <DatePicker value={NewEvent.end} text="End Date" handleChange={(newValue) => {setNewEvent({...NewEvent, end: newValue.toDate()});}}/>

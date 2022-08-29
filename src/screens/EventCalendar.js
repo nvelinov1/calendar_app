@@ -62,7 +62,7 @@ export default function EventCalendar() {
       </Typography>
       <PopUp handleClose={()=>setModalOpen(false)} openState={ModalOpen} ClickedEvent={ClickedEvent} />
       {renderSignedIn()}
-      <Grid container spacing={2} alignItems="stretch" direction="row" justifyContent="center">
+      <Grid container spacing={2} alignItems="stretch" direction="row" justifyContent="center" >
         <Grid item xs={8}>
           <Calendar
           localizer={localizer}
