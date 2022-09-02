@@ -36,6 +36,9 @@ export default function PopUp({ handleClose, openState, ClickedEvent }) {
             <Typography align="center" id="modal-modal-description" variant="h6"> 
               <strong>Event end:</strong> {moment(ClickedEvent.end).format('DD-MM-YYYY hh:mm A')}
             </Typography>
+            <Typography align="center" id="modal-modal-description" variant="h6"> 
+              <strong>Event color</strong> {ClickedEvent.color}
+            </Typography>
             <Typography align="center">
               <Button variant="contained" align="center" onClick={()=>onDelete()}>Delete Event</Button>
             </Typography>

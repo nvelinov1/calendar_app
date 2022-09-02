@@ -5,21 +5,28 @@ import { Box, Stack, TextField, Button, Typography } from '@mui/material'
 import { uid } from 'uid'
 import { auth, db } from '../firebase'
 import { set, ref } from "firebase/database";
+import { BlockPicker } from 'react-color';
 
 export default function EventForm() {
-    const [NewEvent, setNewEvent] = useState({title: "", start: null, end: null})
+    const [NewEvent, setNewEvent] = useState({title: "", start: null, end: null, color: ""})
 
     const HandleSubmit = async(e) => {
       e.preventDefault()
+
+      if (NewEvent.title === "" || NewEvent.start === null || NewEvent.end === null) {
+        return alert("Please enter values for all form fields!")
+      } 
+
       const uidd = uid();
       const db_event = {...NewEvent, id: uidd}
+      console.log(db_event)
       db_event.start = moment(db_event.start).unix()
       db_event.end = moment(db_event.end).unix()
       await set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
         event: db_event,
         uidd: uidd
       });
-      setNewEvent({title: "", start: null, end: null})
+      setNewEvent({title: "", start: null, end: null, color: ""})
     }
 
     return (
@@ -29,7 +36,9 @@ export default function EventForm() {
               <TextField id="outlined-basic" variant="outlined" type="text" placeholder="Event Title" value={NewEvent.title} onChange={(e) => setNewEvent({...NewEvent, title: e.target.value})} />
               <DatePicker value={NewEvent.start} text="Start Date" handleChange={(newValue) => {setNewEvent({...NewEvent, start: newValue.toDate()});}}/>
               <DatePicker value={NewEvent.end} text="End Date" handleChange={(newValue) => {setNewEvent({...NewEvent, end: newValue.toDate()});}}/>
-              <Button variant="contained" onClick={HandleSubmit}>Create Event</Button>
+              <Typography  align="center" variant="h6">Event Color</Typography>
+              <BlockPicker triangle="hide" width="100%" color={NewEvent.color} onChange={(color)=>setNewEvent({...NewEvent, color: color.hex})} />
+              <Button variant="contained" onClick={HandleSubmit} >Create Event</Button>
             </Stack>
           </Box>
   )

@@ -42,7 +42,7 @@ export default function EventCalendar() {
 
       }
     });
-  },[]);
+  },[navigate]);
 
   const handleEventClick = (event) => {
     setModalOpen(true)
@@ -69,6 +69,10 @@ export default function EventCalendar() {
           events={EventsList}
           style={{ height: 500 }}
           onSelectEvent={(e)=>handleEventClick(e)}
+          eventPropGetter={(event)=> {
+            const backgroundColor = event.color 
+            return { style: { backgroundColor }}
+          }}
           />
         </Grid>
             
