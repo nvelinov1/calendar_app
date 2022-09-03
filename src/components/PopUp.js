@@ -40,7 +40,7 @@ export default function PopUp({ handleClose, openState, ClickedEvent }) {
               <strong>Event color</strong> {ClickedEvent.color}
             </Typography>
             <Typography align="center">
-              <Button variant="contained" align="center" onClick={()=>onDelete()}>Delete Event</Button>
+              <Button variant="contained" align="center" color="success" onClick={()=>onDelete()}>Delete Event</Button>
             </Typography>
           </Box>
         </Container>

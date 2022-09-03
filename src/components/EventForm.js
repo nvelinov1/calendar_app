@@ -38,7 +38,7 @@ export default function EventForm() {
               <DatePicker value={NewEvent.end} text="End Date" handleChange={(newValue) => {setNewEvent({...NewEvent, end: newValue.toDate()});}}/>
               <Typography  align="center" variant="h6">Event Color</Typography>
               <BlockPicker triangle="hide" width="100%" color={NewEvent.color} onChange={(color)=>setNewEvent({...NewEvent, color: color.hex})} />
-              <Button variant="contained" onClick={HandleSubmit} >Create Event</Button>
+              <Button variant="contained" onClick={HandleSubmit} color="success" >Create Event</Button>
             </Stack>
           </Box>
   )
