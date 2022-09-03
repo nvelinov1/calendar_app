@@ -1,8 +1,9 @@
-import { Stack, Typography, Container, Button } from '@mui/material'
+import { Stack, Typography, Container, Button, Grid } from '@mui/material'
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import { FaCalendarAlt } from "react-icons/fa"
+import logo from '../n901241.gif'
 
 export default function Welcome() {
 
@@ -18,12 +19,14 @@ export default function Welcome() {
 
   return (
     <Container>
-      <Stack spacing={2} direction="column">
-          <Typography align="center" variant="h2">Calendar App <FaCalendarAlt /></Typography>
-          <Typography align="center" variant="h2"></Typography>
-          <Button variant="contained" component={Link} to="/create_account">Register</Button>
-          <Button variant="contained" component={Link} to="/login">Log In</Button>
-      </Stack>
+      <Grid container direction="row" justifyContent="center" alignItems="center" sx={{ backgroundImage: `url(${logo})`, height: '90vh', border: '2px solid black', backgroundPosition: 'center' }}>
+        <Stack spacing={2} direction="column" sx={{ m: 2, p: 2, border: "2px solid black", backdropFilter: "blur(10px)" }} justifyContent="center" alignItems="center">
+            <Typography align="center" variant="h2">NextEvent <FaCalendarAlt /></Typography>
+            <Typography align="center" variant="h5"> Easily keep track of tasks & due dates</Typography>
+            <Button sx={{ width: 600 }} variant="contained" color="success" component={Link} to="/create_account">Register</Button>
+            <Button sx={{ width: 600 }} variant="contained" color="success" component={Link} to="/login">Log In</Button>
+        </Stack>
+      </Grid>
     </Container>
   )
 }
