@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import { useState, useEffect } from 'react';
 import EventForm from '../components/EventForm'
-import { Typography, Container, Grid, Button } from '@mui/material'
+import { Typography, Grid, Button, AppBar, Toolbar, Container } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../firebase'
 import { ref, onValue } from "firebase/database";
@@ -51,23 +51,26 @@ export default function EventCalendar() {
 
   const renderSignedIn = () => {
     if (Email) {   
-      return <Typography align="center" variant="h6">Signed in as {Email}<Button sx={{ m: "5px" }} variant="contained" size="small" onClick={async()=>await auth.signOut()}>Sign Out</Button></Typography>
+      return <Typography sx={{ flexGrow: 1 }} align="right" variant="h6">{Email}<Button sx={{ m: "5px" }} variant="contained" color="success" size="small" onClick={async()=>await auth.signOut()}>Sign Out</Button></Typography>
     }
   }
 
   return (
-    <Container sx={{ fontFamily: "Roboto" }}>
-      <Typography align="center" variant="h2">
-        Calendar App
-      </Typography>
+    <>
+    <AppBar position="static" sx={{ width: '100%', b: 3 }}>
+        <Toolbar>
+          <Typography sx={{ flexGrow: 1 }} variant="h2">NextEvent</Typography>
+          {renderSignedIn()}
+        </Toolbar>
+    </AppBar>
+    <Container>
       <PopUp handleClose={()=>setModalOpen(false)} openState={ModalOpen} ClickedEvent={ClickedEvent} />
-      {renderSignedIn()}
       <Grid container spacing={2} alignItems="stretch" direction="row" justifyContent="center" >
         <Grid item xs={8}>
-          <Calendar
+          <Calendar 
           localizer={localizer}
           events={EventsList}
-          style={{ height: 500 }}
+          style={{ height: 500, marginTop: 10 }}
           onSelectEvent={(e)=>handleEventClick(e)}
           eventPropGetter={(event)=> {
             const backgroundColor = event.color 
@@ -81,5 +84,6 @@ export default function EventCalendar() {
         </Grid>
       </Grid>
     </Container>
+    </>
   );
 }
