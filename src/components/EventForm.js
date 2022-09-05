@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import DatePicker from './DatePicker';
 import moment from 'moment';
-import { Box, Stack, TextField, Button, Typography, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from '@mui/material'
+import { Box, Stack, TextField, Button, Typography, MenuItem, Menu } from '@mui/material'
+import { FaChevronDown } from "react-icons/fa"
 import { uid } from 'uid'
 import { auth, db } from '../firebase'
 import { set, ref } from "firebase/database";
@@ -10,6 +11,13 @@ import { BlockPicker } from 'react-color';
 export default function EventForm() {
     const [NewEvent, setNewEvent] = useState({title: "", start: null, end: null, color: ""})
     const [EventType, setEventType] = useState(null)
+    const [anchorEl, setAnchorEl] = useState(null)
+    const open = Boolean(anchorEl)
+
+    const handleClose = (e) => {
+      setAnchorEl(null)
+      setEventType(e.currentTarget.dataset.value)
+    }
 
     const HandleSubmit = async(e) => {
       e.preventDefault()
@@ -20,7 +28,6 @@ export default function EventForm() {
 
       const uidd = uid();
       const db_event = {...NewEvent, id: uidd}
-      console.log(db_event)
       db_event.start = moment(db_event.start).unix()
       db_event.end = moment(db_event.end).unix()
       await set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
@@ -34,13 +41,12 @@ export default function EventForm() {
           <Box sx={{ width: '100%'}}>
             <Stack direction="column" justifyContent="center" alignItems="stretch" spacing={2}>
               <Typography  align="center" variant="h4"> Add New Event </Typography>
-              <FormControl>
-                <FormLabel>Select Event Type</FormLabel>
-                <RadioGroup value={EventType} onChange={(e)=>setEventType(e.target.value)}>
-                  <FormControlLabel value="event" control={<Radio />} label="Event" />
-                  <FormControlLabel value="duedate" control={<Radio />} label="Due Date" />
-                </RadioGroup>
-              </FormControl>
+              <Button variant="contained" onClick={(e)=>setAnchorEl(e.currentTarget)}>Create{'\u00A0'}<FaChevronDown/></Button>
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                <MenuItem onClick={handleClose} data-value="event">Event</MenuItem>
+                <MenuItem onClick={handleClose} data-value="dudedate">Due Date</MenuItem>
+              </Menu>
+
               {EventType ? 
               <>
                 <TextField variant="outlined" type="text" placeholder="Event Title" value={NewEvent.title} onChange={(e) => setNewEvent({...NewEvent, title: e.target.value})} />
